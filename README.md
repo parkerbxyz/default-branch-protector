@@ -6,13 +6,15 @@ This project listens for [organization events](https://developer.github.com/webh
 
 ## Prerequisites
 
-This project requires you to register a new GitHub App and install in your GitHub organization. The app will need the following permissions:
+This project requires you to register a new GitHub App and install in your GitHub organization. 
+
+The app will need the following permissions:
 * **Repository administration** (Read & Write)
 * **Issues** (Read & Write)
 
-You can learn how to configure a GitHub App by following the "[Setting up your development environment](https://developer.github.com/apps/quickstart-guides/setting-up-your-development-environment/)" quickstart guide on developer.github.com.
-
 After creating your app, generate a private key for your app and save the resulting PEM file (called something like `app-name`-`date`-private-key.pem) in a directory where you can find it again. Also note the app ID GitHub has assigned your app. You'll need these to [set your environment variables](#Set-environment-variables).
+
+You can learn how to configure a GitHub App by following the "[Setting up your development environment](https://developer.github.com/apps/quickstart-guides/setting-up-your-development-environment/)" quickstart guide on developer.github.com.
 
 ## Install
 
