@@ -11,6 +11,9 @@ set :port, 3000
 set :bind, '0.0.0.0'
 
 class GHAapp < Sinatra::Application
+  get '/' do
+    'Success! Watching organization events for new repositories.'
+  end
 
   # Converts the newlines. Expects that the private key has been set as an
   # environment variable in PEM format.
@@ -28,7 +31,6 @@ class GHAapp < Sinatra::Application
     set :logging, Logger::DEBUG
   end
 
-
   # Executed before each request to the `/event_handler` route
   before '/event_handler' do
     get_payload_request(request)
@@ -38,27 +40,52 @@ class GHAapp < Sinatra::Application
     authenticate_installation(@payload)
   end
 
-
   post '/event_handler' do
-
     case request.env['HTTP_X_GITHUB_EVENT']
-    when 'issues'
-      if @payload['action'] === 'opened'
-        handle_issue_opened_event(@payload)
+    when 'repository'
+      if @payload['action'].match?('created')
+        sleep 1 # wait for creation of master branch
+        protect_master_branch(@payload)
+        notify_user(@payload)
       end
     end
 
     200 # success status
   end
 
-
   helpers do
+    # Protect the master branch on new repositories
+    def protect_master_branch(payload)
+      @repo = payload['repository']['full_name']
+      @branch = payload['repository']['default_branch'] # master branch
+      options = {
+        # This header is necessary for beta access to the branch_protection API
+        # See https://developer.github.com/v3/repos/branches/#update-branch-protection
+        accept: 'application/vnd.github.luke-cage-preview+json',
+        # Require at least two approving review on a pull request before merging
+        required_pull_request_reviews: { required_approving_review_count: 2 },
+        # Enforce all configured restrictions for administrators
+        enforce_admins: true
+      }
+      logger.debug 'Protecting master branch'
+      @installation_client.protect_branch(@repo, @branch, options)
+    end
 
-    # When an issue is opened, add a label
-    def handle_issue_opened_event(payload)
-      repo = payload['repository']['full_name']
-      issue_number = payload['issue']['number']
-      @installation_client.add_labels_to_an_issue(repo, issue_number, ['needs-response'])
+    # Open an issue to notify the user of branch protection rules
+    def notify_user(payload)
+      username = payload['sender']['login']
+      help_url = 'https://help.github.com/en/articles/about-protected-branches'
+      issue_title = 'Master Branch Protected 🔐'
+      issue_body = <<~BODY
+        @#{username}: branch protection rules have been added to the `#{@branch}` branch.
+        - Collaborators cannot force push to the protected branch or delete the branch
+        - All commits must be made to a non-protected branch and submitted via a pull request
+        - There must be least 2 approving reviews and no changes requested before a PR can be merged
+        \n **Note:** All configured restrictions are enforced for administrators.
+        \n You can learn more about protected branches here: [About protected branches - GitHub Help](#{help_url})
+      BODY
+      logger.debug 'Creating a new issue'
+      @installation_client.create_issue(@repo, issue_title, issue_body)
     end
 
     # Saves the raw payload and converts the payload to JSON format
