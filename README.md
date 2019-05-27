@@ -17,11 +17,13 @@ After creating your app, generate a private key for your app and save the result
 ## Install
 
 Run the following command to clone this repository:
+
 ```
 git clone https://github.com/parkerbxyz/master-branch-protector.git
 ```
 
 Install dependencies by running the following command from the project directory:
+
 ```
 gem install bundler && bundle install
 ```
@@ -31,14 +33,17 @@ With the dependencies installed, you can [start the server](#Start-the-server).
 ## Set environment variables
 
 1. Create a copy of the `.env-example` file called `.env`.
+
     ```
     cp .env-example .env
     ```
+    
 2. Add your GitHub App's private key, app ID, and webhook secret to the `.env` file.
     
     **Note:** Copy the entire contents of your PEM file as the value of `GITHUB_PRIVATE_KEY` in your `.env` file. 
     <br />
     Because the PEM file is more than one line you'll need to add quotes around the value like the example below:
+
     ```
     PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----
     ...
@@ -52,6 +57,7 @@ With the dependencies installed, you can [start the server](#Start-the-server).
 ## Start the server
 
 1. Run `ruby server.rb` on the command line. You should see a response like:
+
     ```
     == Sinatra (v2.0.3) has taken the stage on 3000 for development with backup from Puma
     Puma starting in single mode...
@@ -61,6 +67,7 @@ With the dependencies installed, you can [start the server](#Start-the-server).
     * Listening on tcp://localhost:3000
     Use Ctrl-C to stop
     ```
+
 2. View the Sinatra app at `localhost:3000` to verify your app is connected to the server.
 
 ## Resources
