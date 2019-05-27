@@ -6,12 +6,6 @@ This project listens for [organization events](https://developer.github.com/webh
 
 ## Prerequisites
 
-Before you begin, you'll need to clone this repository to a directory where you'd like to store the code:
-
-```
-git clone https://github.com/parkerbxyz/master-branch-protector.git
-```
-
 To run this web service on your local machine, you will need to use a tool like Smee to send webhooks to your local machine without exposing it to the internet. If you're already comfortable with other tools that expose your local machine to the internet like [ngrok](https://ngrok.com/) or [localtunnel](https://localtunnel.github.io/www/), feel free to use those.
 
 ### Start a new Smee channel
