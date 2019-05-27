@@ -1,6 +1,6 @@
 Adapted from [github-developer/using-the-github-api-in-your-app](https://github.com/github-developer/using-the-github-api-in-your-app).
 
-This is an example GitHub App that automates the protection of the master branch upon repository creation. The creator of the new repository will be notified with an [@mention](https://help.github.com/en/articles/basic-writing-and-formatting-syntax#mentioning-people-and-teams) in an issue within the repository that outlines the protections that were added.
+This is an example GitHub App that automates the protection of the master branch upon creation of new repositories within a GitHub organization. The creator of the new repository will be notified with an [@mention](https://help.github.com/en/articles/basic-writing-and-formatting-syntax#mentioning-people-and-teams) in an issue within the repository that outlines the protections that were added.
 
 This project listens for [organization events](https://developer.github.com/webhooks/#events) and uses the [Octokit.rb](https://github.com/octokit/octokit.rb) library to make REST API calls.
 
@@ -10,11 +10,11 @@ To run this web service on your local machine, you will need to use a tool like 
 
 ### Start a new Smee channel
 
-1. Go to https://smee.io and click **Start a new channel**.
+Go to https://smee.io and click **Start a new channel**.
 
-    Starting a new Smee channel creates a unique domain where GitHub can send webhook payloads. This domain is called a Webhook Proxy URL and looks something like this: `https://smee.io/qrfeVRbFbffd6vD`
+Starting a new Smee channel creates a unique domain where GitHub can send webhook payloads. This domain is called a Webhook Proxy URL and looks something like this: `https://smee.io/qrfeVRbFbffd6vD`
 
-    > **Note:** The following steps are slightly different than the "Use the CLI" instructions you'll see on your Smee channel page. You do **not** need to follow the "Use the Node.js client" or "Using Probot's built-in support" instructions.
+**Note:** The following steps are slightly different than the "Use the CLI" instructions you'll see on your Smee channel page. You do **not** need to follow the "Use the Node.js client" or "Using Probot's built-in support" instructions.
 
 1. Install the Smee client
     ```
@@ -32,7 +32,7 @@ To run this web service on your local machine, you will need to use a tool like 
     Connected https://smee.io/qrfeVRbFbffd6vD
     ```
 
-You will also need to register a new GitHub App and install it in your GitHub organization.
+Next, you will need to register a new GitHub App and install it in your GitHub organization.
 
 ### Register a new GitHub App
 1. Visit the settings page in your GitHub organization's profile, and click on GitHub Apps under Developer settings.
@@ -63,6 +63,17 @@ After you create your app, you'll be taken back to the app settings page. You ha
 1. **Generate a private key for your app**. This is necessary to authenticate your app later on. Scroll down on the page and click **Generate a private key**. Save the resulting PEM file in a directory where you can find it again.
 
 1. **Note the app ID GitHub has assigned your app**. You'll need this later when you [set your environment variables](#Set-environment-variables).
+
+### Install the app on your organization account
+
+Now it's time to install the app. From your app's settings page, do the following:
+
+1. Click **Install App** in the sidebar. Next to your organization name, click **Install**.
+
+1. You'll be asked whether to install the app on all repositories or selected repositories. Select **All repositories**.
+
+1. Click **Install**.
+
 
 ## Install
 
@@ -119,6 +130,29 @@ With the dependencies installed, you can [start the server](#Start-the-server).
     ```
 
 1. View the Sinatra app at `localhost:3000` to verify your app is connected to the server.
+
+The web service should now running and watching for new repositories to be created within your organization! 🚀
+
+When you create a new repository in your organization, you should see some output in the Terminal tab where you started `server.rb` that looks something like this:
+
+```
+D, [2019-05-27T16:59:24.136072 #56585] DEBUG -- : ---- received event repository
+D, [2019-05-27T16:59:24.136107 #56585] DEBUG -- : ----    action created
+D, [2019-05-27T16:59:25.351392 #56585] DEBUG -- : Protecting master branch
+D, [2019-05-27T16:59:25.739671 #56585] DEBUG -- : Creating a new issue
+140.82.115.69 - - [27/May/2019:16:59:26 -0400] "POST /event_handler HTTP/1.1" 200 - 2.4251
+127.0.0.1 - - [27/May/2019:16:59:24 EDT] "POST /event_handler HTTP/1.1" 200 0
+- -> /event_handler
+```
+
+This means your app is running on the server as expected. 🙌
+
+If you don't see the output, make sure Smee is running correctly in another Terminal tab.
+
+## Troubleshooting
+
+If you run into any problems, check out the Troubleshooting section in the "[Setting up your development environment](https://developer.github.com/apps/quickstart-guides/setting-up-your-development-environment/#troubleshooting)" quickstart guide on developer.github.com. If you run into any other trouble, you can [open an issue](https://github.com/parkerbxyz/master-branch-protector/issues/new) in this repository.
+
 
 ## Resources
 
