@@ -154,7 +154,7 @@ If you don't see the output, make sure Smee is running correctly in another Term
 If you run into any problems, check out the Troubleshooting section in the "[Setting up your development environment](https://developer.github.com/apps/quickstart-guides/setting-up-your-development-environment/#troubleshooting)" quickstart guide on developer.github.com. If you run into any other trouble, you can [open an issue](https://github.com/parkerbxyz/master-branch-protector/issues/new) in this repository.
 
 
-## Resources
+## References
 
 * [Setting up your development environment | GitHub Developer Guide](https://developer.github.com/apps/quickstart-guides/setting-up-your-development-environment/)
 * [Using the GitHub API in your app | GitHub Developer Guide](https://developer.github.com/apps/quickstart-guides/using-the-github-api-in-your-app/)
