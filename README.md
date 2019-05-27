@@ -156,7 +156,8 @@ If you run into any problems, check out the Troubleshooting section in the "[Set
 
 ## Resources
 
-* [Quickstart guides | GitHub Developer Guide](https://developer.github.com/apps/quickstart-guides/)
+* [Setting up your development environment | GitHub Developer Guide](https://developer.github.com/apps/quickstart-guides/setting-up-your-development-environment/)
+* [Using the GitHub API in your app | GitHub Developer Guide](https://developer.github.com/apps/quickstart-guides/using-the-github-api-in-your-app/)
 * [Branches | GitHub Developer Guide](https://developer.github.com/v3/repos/branches/#update-branch-protection)
 * [github-developer/using-the-github-api-in-your-app](https://github.com/github-developer/using-the-github-api-in-your-app)
 * https://octokit.github.io/octokit.rb/Octokit/Client.html
