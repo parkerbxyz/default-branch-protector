@@ -32,9 +32,9 @@ Starting a new Smee channel creates a unique domain where GitHub can send webhoo
     Connected https://smee.io/qrfeVRbFbffd6vD
     ```
 
+### Register a new GitHub App
 Next, you will need to register a new GitHub App and install it in your GitHub organization.
 
-### Register a new GitHub App
 1. Visit the settings page in your GitHub organization's profile, and click on GitHub Apps under Developer settings.
 1. Click **New GitHub App**. You'll see a form where you can enter details about your app.
 1. Give your app a name. This can be anything you'd like.
@@ -131,7 +131,7 @@ With the dependencies installed, you can [start the server](#Start-the-server).
 
 1. View the Sinatra app at `localhost:3000` to verify your app is connected to the server.
 
-The web service should now running and watching for new repositories to be created within your organization! 🚀
+The web service should now be running and watching for new repositories to be created within your organization! 🚀
 
 When you create a new repository in your organization, you should see some output in the Terminal tab where you started `server.rb` that looks something like this:
 
@@ -157,6 +157,8 @@ You can add, remove, or modify the branch protection rules by changing the param
     def protect_master_branch(payload)
       @repo = payload['repository']['full_name']
       @branch = payload['repository']['default_branch'] # master branch
+      
+      # This is where branch protection parameters go
       options = {
         # This header is necessary for beta access to the branch_protection API
         # See https://developer.github.com/v3/repos/branches/#update-branch-protection
@@ -166,12 +168,36 @@ You can add, remove, or modify the branch protection rules by changing the param
         # Enforce all configured restrictions for administrators
         enforce_admins: true
       }
+      
       logger.debug 'Protecting master branch'
       @installation_client.protect_branch(@repo, @branch, options)
     end
 ```
 
 You can find a list of branch protection parameters in the [GitHub Developer Guide](https://developer.github.com/v3/repos/branches/#update-branch-protection).
+
+If you change any of the branch protection parameters in the `protect_master_branch` helper method, you should update the  `issue_body` variable in the `notify_user` helper method to reflect those changes:
+```ruby
+# Open an issue to notify the user of branch protection rules
+    def notify_user(payload)
+      username = payload['sender']['login']
+      help_url = 'https://help.github.com/en/articles/about-protected-branches'
+      issue_title = 'Master Branch Protected 🔐'
+      
+      # An outline of the protections that were added to the master branch
+      issue_body = <<~BODY
+        @#{username}: branch protection rules have been added to the `#{@branch}` branch.
+        - Collaborators cannot force push to the protected branch or delete the branch
+        - All commits must be made to a non-protected branch and submitted via a pull request
+        - There must be least 2 approving reviews and no changes requested before a PR can be merged
+        \n **Note:** All configured restrictions are enforced for administrators.
+        \n You can learn more about protected branches here: [About protected branches - GitHub Help](#{help_url})
+      BODY
+      
+      logger.debug 'Creating a new issue'
+      @installation_client.create_issue(@repo, issue_title, issue_body)
+    end
+```
 
 ## Troubleshooting
 
