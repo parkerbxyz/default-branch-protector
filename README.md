@@ -149,6 +149,30 @@ This means your app is running on the server as expected. 🙌
 
 If you don't see the output, make sure Smee is running correctly in another Terminal tab.
 
+## Usage
+
+You can add, remove, or modify the branch protection rules by changing the parameters inside the `options` array in the `protect_master_branch` helper method:
+```ruby
+# Protect the master branch on new repositories
+    def protect_master_branch(payload)
+      @repo = payload['repository']['full_name']
+      @branch = payload['repository']['default_branch'] # master branch
+      options = {
+        # This header is necessary for beta access to the branch_protection API
+        # See https://developer.github.com/v3/repos/branches/#update-branch-protection
+        accept: 'application/vnd.github.luke-cage-preview+json',
+        # Require at least two approving review on a pull request before merging
+        required_pull_request_reviews: { required_approving_review_count: 2 },
+        # Enforce all configured restrictions for administrators
+        enforce_admins: true
+      }
+      logger.debug 'Protecting master branch'
+      @installation_client.protect_branch(@repo, @branch, options)
+    end
+```
+
+You can find a list of branch protection parameters in the [GitHub Developer Guide](https://developer.github.com/v3/repos/branches/#update-branch-protection).
+
 ## Troubleshooting
 
 If you run into any problems, check out the Troubleshooting section in the "[Setting up your development environment](https://developer.github.com/apps/quickstart-guides/setting-up-your-development-environment/#troubleshooting)" quickstart guide on developer.github.com. If you run into any other trouble, you can [open an issue](https://github.com/parkerbxyz/master-branch-protector/issues/new) in this repository.
