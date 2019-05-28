@@ -6,7 +6,7 @@ This project listens for [organization events](https://developer.github.com/webh
 
 ## Prerequisites
 
-To run this web service on your local machine, you will need to use a tool like Smee to send webhooks to your local machine without exposing it to the internet. If you're already comfortable with similar tools like [ngrok](https://ngrok.com/) or [localtunnel](https://localtunnel.github.io/www/), feel free to use those.
+To run this web service on your local machine, you will need to use a tool like Smee to send webhooks to your local machine without exposing it to the internet. If you're already comfortable with similar tools such as [ngrok](https://ngrok.com/) or [localtunnel](https://localtunnel.github.io/www/), feel free to use those instead.
 
 ### Start a new Smee channel
 
