@@ -48,9 +48,11 @@ Next, you will need to register a new GitHub App and install it in your GitHub o
     ```
     You'll need this secret again later, so make note of it somewhere before moving on.
 
-1. Under Permissions, specify the following set of permissions for your app:
-    * **Repository administration** (Read & Write)
+1. Under Permissions, specify the following **Repository permissions** for your app:
+    * **Administration** (Read & Write)
     * **Issues** (Read & Write)
+    
+1. Scroll down to **Subscribe to events** and make sure **Repository** is checked. 
 
 1. At the bottom of the page, specify whether this is a private app or a public app. For now, leave the app as private by selecting **Only on this account**.
 
@@ -80,7 +82,7 @@ Now it's time to install the app. From your app's settings page, do the followin
 Run the following command to clone this repository:
 
 ```
-git clone https://github.com/parkerbxyz/master-branch-protector.git
+git clone https://github.com/Sandboxes-R-Us/master-branch-protector.git
 ```
 
 Install dependencies by running the following command from the project directory:
