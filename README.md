@@ -206,7 +206,7 @@ If you change any of the branch protection parameters in the `protect_master_bra
 If you run into any problems, check out the Troubleshooting section in the "[Setting up your development environment](https://developer.github.com/apps/quickstart-guides/setting-up-your-development-environment/#troubleshooting)" quickstart guide on [developer.github.com](developer.github.com). If you run into any other trouble, you can [open an issue](https://github.com/Sandboxes-R-Us/master-branch-protector/issues/new) in this repository.
 
 
-## References
+## Resources
 
 * [Setting up your development environment | GitHub Developer Guide](https://developer.github.com/apps/quickstart-guides/setting-up-your-development-environment/)
 * [Using the GitHub API in your app | GitHub Developer Guide](https://developer.github.com/apps/quickstart-guides/using-the-github-api-in-your-app/)
