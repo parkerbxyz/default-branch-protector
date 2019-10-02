@@ -165,7 +165,7 @@ You can add, remove, or modify the branch protection rules by changing the param
         # This header is necessary for beta access to the branch_protection API
         # See https://developer.github.com/v3/repos/branches/#update-branch-protection
         accept: 'application/vnd.github.luke-cage-preview+json',
-        # Require at least two approving review on a pull request before merging
+        # Require at least two approving reviews on a pull request before merging
         required_pull_request_reviews: { required_approving_review_count: 2 },
         # Enforce all configured restrictions for administrators
         enforce_admins: true
