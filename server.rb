@@ -44,8 +44,8 @@ class GHAapp < Sinatra::Application
     case request.env['HTTP_X_GITHUB_EVENT']
     when 'repository'
       if @payload['action'].match?('created')
-        sleep 1 # wait for creation of master branch
-        protect_master_branch(@payload)
+        sleep 1 # wait for creation of default branch
+        protect_default_branch(@payload)
         notify_user(@payload)
       end
     end
@@ -54,10 +54,10 @@ class GHAapp < Sinatra::Application
   end
 
   helpers do
-    # Protect the master branch on new repositories
-    def protect_master_branch(payload)
+    # Protect the default branch on new repositories
+    def protect_default_branch(payload)
       @repo = payload['repository']['full_name']
-      @branch = payload['repository']['default_branch'] # master branch
+      @branch = payload['repository']['default_branch']
       options = {
         # This header is necessary for beta access to the branch_protection API
         # See https://developer.github.com/v3/repos/branches/#update-branch-protection
@@ -67,7 +67,7 @@ class GHAapp < Sinatra::Application
         # Enforce all configured restrictions for administrators
         enforce_admins: true
       }
-      logger.debug 'Protecting master branch'
+      logger.debug 'Protecting default branch'
       @installation_client.protect_branch(@repo, @branch, options)
     end
 
@@ -75,7 +75,7 @@ class GHAapp < Sinatra::Application
     def notify_user(payload)
       username = payload['sender']['login']
       help_url = 'https://help.github.com/en/articles/about-protected-branches'
-      issue_title = 'Master Branch Protected 🔐'
+      issue_title = 'Default Branch Protected 🔐'
       issue_body = <<~BODY
         @#{username}: branch protection rules have been added to the `#{@branch}` branch.
         - Collaborators cannot force push to the protected branch or delete the branch
